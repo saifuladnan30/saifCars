@@ -3,7 +3,10 @@
     {
       "src": "saifCars/wsgi.py",
       "use": "@vercel/python",
-      "config": {"maxLambdaSize":"15mb", "runtime":"python3.9"}
+      "config": {
+        "maxLambdaSize": "15mb",
+        "runtime": "python3.9"
+      }
     }
   ],
   "routes": [
@@ -11,5 +14,10 @@
       "src": "/(.*)",
       "dest": "saifCars/wsgi.py"
     }
-  ]
+  ],
+  "env": {
+    "DJANGO_SETTINGS_MODULE": "saifCars.settings",
+    "SECRET_KEY": "django-insecure-=y8zd@&bvl9#(m+e_3*!i0b0d78)qc+5aw71(y#==r3w_tv_el",
+    "DEBUG": "False"
+  }
 }
