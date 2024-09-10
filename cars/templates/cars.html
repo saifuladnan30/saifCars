@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+{% block content%}
+<section>
+    <div class="container d-flex align-items-center">
+        <div class="col-6 pe-5">
+            <h>Make an entrance with the beautifully crafted Motor collection, an element of possibility and elegance. We have turned an uncompromising eye to creating a series of luxury objects to complement your lifestyle. Let’s Go Places. Make an entrance with the beautifully crafted Motor collection, an element of possibility and elegance. We have turned an uncompromising eye to creating a series of luxury objects to complement your lifestyle.</h>
+        </div>
+        <div class="col-6">
+            <img style="max-width: 100%;" src="{% static "img/car.jpg" %}" alt="">
+        </div>
+    </div>
+</section>
+<section class="container">
+    <div class="">
+        <div class="d-flex flex-wrap mt-5 border-success border-top pt-3 pb-2">
+            <div class="">
+                <label for="{{brand.id}}">
+                    <a class="btn btn-success" style="text-decoration: none" href="/">All</a>
+                </label>
+            </div>
+            {% for br in brands %}
+            <div class="px-2">
+                <label for="{{br.id}}">
+                    <a class="btn btn-success" style="text-decoration: none" href="{% url "brand_wise_car" br.slug %}">{{br.brand_name | upper}}</a>
+                </label>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="">
+    <small>{{data | length}} results found</small>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3">
+            {% for post in data %}
+            <div class="col my-3">
+                <div class="shadow-lg p-3 card">
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" class="card-img-top" alt="Image">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title border-dark pb-2 border-bottom"><a style="text-decoration: none; color: black" href="{% url "car_details" post.id %}">{{post.car_name}}</a></h5>
+                        <p class="card-text">{{post.details | truncatewords:10}}</p>
+                        </a></p>
+                        <h6>Price: ${{post.price}}</h6>
+                        <p>Brand: 
+                            {% if post.brand %}
+                                <a class="text-success" style="text-decoration:none" href="{% url "brand_wise_car" post.brand.slug %}">{{ post.brand.brand_name | upper }}</a>
+                            {% else %}
+                                No Brand
+                            {% endif %}
+                        </p>
+                        <p>Available Qnt: {{post.quantity_available}}</p>
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'buy_car' post.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                                Buy Now
+                                </button>
+                            </form>
+                            {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+<!-- Modal -->
+
+{% endblock content%}
